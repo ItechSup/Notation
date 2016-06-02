@@ -16,6 +16,13 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), [
 ]);
 
 /*
+ * Activation du CORS
+ */
+$app->after(function (\Symfony\Component\HttpFoundation\Request $request, \Symfony\Component\HttpFoundation\Response $response) {
+    $response->headers->set('Access-Control-Allow-Origin', '*');
+});
+
+/*
  * On a envie d'avoir le json déjà décodé dans nos actions. A chaque fois
  */
 $app->before(function (Symfony\Component\HttpFoundation\Request $request) {
