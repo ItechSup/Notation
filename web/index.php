@@ -173,7 +173,7 @@ class Personne extends Modele
     }
 
     public function delete() {
-        $sql = "DELETE from Personne WHER id = ?";
+        $sql = "DELETE from Personne WHERE id = ?";
         $this->app['db']->executeUpdate($sql, [$this->id]);
     }
 
@@ -241,7 +241,7 @@ class Session extends Modele
     }
 
     public function delete() {
-        $sql = "DELETE from Session WHER id = ?";
+        $sql = "DELETE from Session WHERE id = ?";
         $this->app['db']->executeUpdate($sql, [$this->id]);
     }
 }
@@ -295,10 +295,9 @@ $app->delete('/api/personnes/{personne}', function(\Symfony\Component\HttpFounda
         if (!$personne) {
             return $app->json("Personne inconnue", Symfony\Component\HttpFoundation\Response::HTTP_NOT_FOUND);
         }
-        $personne->nom = $requete->request->get('nom');
-        $personne->prenom = $requete->request->get('prenom');
-        $personne->update();
-        return $app->json($app['url_generator']->generate('api_r_personne', ['personne' => $personne->id], 0));
+        $personne->delete();
+        // TODO : remplacer 204 par la bonne constante
+        return $app->json('', 204);
     } catch (Exception $e) {
         return $app->json("Something went wrong", Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR);
     }
