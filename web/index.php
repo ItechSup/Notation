@@ -319,4 +319,16 @@ $app->get('/api/sessions/{session}', function(Session $session) use ($app){
     return $app->json($session->getJsonRepresentation());
 })->convert('session', $sessionProvider)->bind('api_r_session');
 
+// all sessions
+$app->get('/api/sessions', function() use ($app){
+    $listeSession = array_map(
+        function($elmt) use ($app) {
+            return $app['url_generator']->generate('api_r_session', ['session' => $elmt['id']], 0);
+        },
+        $app['db']->executeQuery("SELECT * FROM Session ")->fetchAll()
+    );
+
+    return $app->json($listeSession);
+})->bind('api_r_sessions');
+
 $app->run();
